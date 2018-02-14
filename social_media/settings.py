@@ -9,13 +9,17 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
+try:
+    import configparser
+except:
+    from six.moves import configparser
 import os
+import socket  # Import socket to read host name
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
+config = configparser.ConfigParser(allow_no_value=True)
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -27,6 +31,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# If the host name starts with 'ip', load configparser from "production.cfg"
+if socket.gethostname().startswith('ip'):
+    config.read('%s/production.cfg' % PROJECT_DIR)
+    print('production config')
+    ENV = 'PROD'
+else:
+    config.read('%s/development.cfg' % PROJECT_DIR)
+    print('development config')
+    ENV = 'DEV'
 
 # Application definition
 
@@ -73,13 +86,22 @@ WSGI_APPLICATION = 'social_media.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+LDB_NAME = config.get('db', 'NAME')
+LDB_USER = config.get('db', 'USER')
+LDB_PASSWORD = config.get('db', 'PASSWORD')
+LDB_HOST = config.get('db', 'HOST')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'CONN_MAX_AGE': 500,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': LDB_NAME,
+        'USER': LDB_USER,
+        'PASSWORD': LDB_PASSWORD,
+        'HOST': LDB_HOST,
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -98,6 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 
 # Internationalization
