@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator, MaxLengthValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 class User(models.Model):
@@ -12,7 +12,7 @@ class User(models.Model):
                                     )
     email = models.EmailField(
         max_length=300, unique=True, blank=True, null=True)
-    follows = models.ManyToManyField('User', related_name='followed_by')
+    follows = models.ManyToManyField('User')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -28,7 +28,7 @@ class User(models.Model):
 
 class Post(models.Model):
 
-    post_text = models.TextField(validators=MaxLengthValidator(80),
+    post_text = models.TextField(max_length=80,
                                  blank=False, null=False)
     user = models.ForeignKey(
         User, null=False, blank=False, on_delete=models.CASCADE,

@@ -1,4 +1,4 @@
-[db]
+[database]
 NAME: social-media
 USER: postgre
 PASSWORD: root

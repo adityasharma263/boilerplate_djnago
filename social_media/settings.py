@@ -22,7 +22,6 @@ config = configparser.ConfigParser(allow_no_value=True)
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'aa-1qhc!f)jcdl5uf$qh7k42up9qebcms-^(^#^1jmn*b#u^4f'
 
@@ -50,6 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'django.contrib.postgres',
+    'django_extensions',
+    'social_media',
+    'social_media.app',
 ]
 
 MIDDLEWARE = [
@@ -85,11 +89,10 @@ WSGI_APPLICATION = 'social_media.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-LDB_NAME = config.get('db', 'NAME')
-LDB_USER = config.get('db', 'USER')
-LDB_PASSWORD = config.get('db', 'PASSWORD')
-LDB_HOST = config.get('db', 'HOST')
+LDB_NAME = config.get('database', 'NAME')
+LDB_USER = config.get('database', 'USER')
+LDB_PASSWORD = config.get('database', 'PASSWORD')
+LDB_HOST = config.get('database', 'HOST')
 
 DATABASES = {
     'default': {
