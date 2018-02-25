@@ -8,9 +8,10 @@ from social_media.app.serializer import UserSerializer
 from social_media.app.models import User
 
 
-@api_view(['Get', 'POST'])
+@api_view(['GET', 'POST'])
 @parser_classes((JSONParser,))
 def user(request):
+    print("yoooooooo")
     if request.method == 'POST':
         try:
             obj = request.data
