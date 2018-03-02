@@ -1,2 +1,2 @@
-# social-media
-A simple social media app using django
+# boilerplate
+A django boilerplate for web app
